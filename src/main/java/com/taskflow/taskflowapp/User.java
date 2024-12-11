@@ -8,8 +8,9 @@ import java.util.Set;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private int id;
 
+    //@Column(unique = true)
     private String username;
     private String password;
     //private Set<Role> roles;
@@ -18,16 +19,16 @@ public class User {
 
     }
 
-    public User(String password, String username) {
-        this.password = password;
+    public User(String username, String password) {
         this.username = username;
+        this.password = password;
     }
 
-    public Long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -47,7 +48,16 @@ public class User {
         this.password = password;
     }
 
-//    public Set<Role> getRoles() {
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                '}';
+    }
+
+    //    public Set<Role> getRoles() {
 //        return roles;
 //    }
 //
