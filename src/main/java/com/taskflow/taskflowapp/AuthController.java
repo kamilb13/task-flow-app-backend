@@ -4,6 +4,8 @@ import com.taskflow.taskflowapp.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -18,16 +20,21 @@ public class AuthController {
     }
 
 
-    
+
 
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody LoginRequest loginRequest) {
         Optional<User> pendingUser = userRepository.findByUsername(loginRequest.getUsername());
-        System.out.println(pendingUser.isPresent());
-        if(pendingUser.isPresent()){
+        //System.out.println(pendingUser.isPresent());
+
+        if (pendingUser.isPresent()) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Username already in use");
         }
-        User newUser = new User(loginRequest.getUsername(), loginRequest.getPassword());
+
+        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String encodedPassword = passwordEncoder.encode(loginRequest.getPassword());
+
+        User newUser = new User(loginRequest.getUsername(), encodedPassword);
         userRepository.save(newUser);
         return ResponseEntity.status(HttpStatus.CREATED).body("User registered successfully" + newUser.toString());
     }
@@ -35,10 +42,12 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
         Optional<User> pendingUser = userRepository.findByUsername(loginRequest.getUsername());
-        System.out.println(pendingUser);
         if (pendingUser.isPresent()) {
             User user = pendingUser.get();
-            if (user.getPassword().equals(loginRequest.getPassword())) {
+
+            PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
+            if (passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
                 return ResponseEntity.ok(user);
             } else {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid password.");
