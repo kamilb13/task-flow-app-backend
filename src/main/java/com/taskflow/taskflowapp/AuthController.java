@@ -13,12 +13,13 @@ import java.util.Optional;
 @RestController
 public class AuthController {
     private final UserRepository userRepository;
+    private final JwtUtil jwtUtil;
 
     @Autowired
-    public AuthController(UserRepository userRepository) {
+    public AuthController(UserRepository userRepository, JwtUtil jwtUtil) {
         this.userRepository = userRepository;
+        this.jwtUtil = jwtUtil;
     }
-
 
 
 
@@ -48,7 +49,10 @@ public class AuthController {
             PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
             if (passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
-                return ResponseEntity.ok(user);
+                String token = jwtUtil.generateToken(user.getUsername());
+
+                return ResponseEntity.ok(new LoginResponse(token));
+//                return ResponseEntity.ok(user);
             } else {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid password.");
             }
