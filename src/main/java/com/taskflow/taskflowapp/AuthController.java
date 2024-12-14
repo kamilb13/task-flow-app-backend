@@ -17,6 +17,9 @@ public class AuthController {
         this.userRepository = userRepository;
     }
 
+
+    
+
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody LoginRequest loginRequest) {
         Optional<User> pendingUser = userRepository.findByUsername(loginRequest.getUsername());
