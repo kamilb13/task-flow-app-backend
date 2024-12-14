@@ -1,9 +1,11 @@
 package com.taskflow.taskflowapp;
 
+import com.taskflow.taskflowapp.repositories.RoleRepository;
 import com.taskflow.taskflowapp.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -13,15 +15,15 @@ import java.util.Optional;
 @RestController
 public class AuthController {
     private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
     private final JwtUtil jwtUtil;
 
     @Autowired
-    public AuthController(UserRepository userRepository, JwtUtil jwtUtil) {
+    public AuthController(UserRepository userRepository, RoleRepository roleRepository, JwtUtil jwtUtil) {
         this.userRepository = userRepository;
+        this.roleRepository = roleRepository;
         this.jwtUtil = jwtUtil;
     }
-
-
 
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody LoginRequest loginRequest) {
@@ -35,7 +37,12 @@ public class AuthController {
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String encodedPassword = passwordEncoder.encode(loginRequest.getPassword());
 
-        User newUser = new User(loginRequest.getUsername(), encodedPassword);
+        Role userRole = new Role("USER");
+
+
+        User newUser = new User(loginRequest.getUsername(), encodedPassword, userRole);
+
+
         userRepository.save(newUser);
         return ResponseEntity.status(HttpStatus.CREATED).body("User registered successfully" + newUser.toString());
     }
