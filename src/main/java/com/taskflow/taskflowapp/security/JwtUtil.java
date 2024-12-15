@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
 import java.util.Date;
+import java.util.List;
 
 @Component
 public class JwtUtil {
@@ -16,10 +17,10 @@ public class JwtUtil {
 
     long expirationTime = 86400000;
 
-    public String generateToken(String username) {
+    public String generateToken(String username, List<String> roles ) {
         return Jwts.builder()
                 .setSubject(username)
-                //.claim("role", role)
+                .claim("roles", roles)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + expirationTime))
                 .signWith(secretKey)
@@ -36,6 +37,15 @@ public class JwtUtil {
         } catch (Exception e) {
             return false;
         }
+    }
+
+    public List<String> extractRoles(String token) {
+        return (List<String>) Jwts.parserBuilder()
+                .setSigningKey(secretKey)
+                .build()
+                .parseClaimsJws(token)
+                .getBody()
+                .get("roles");
     }
 
     public String extractUsername(String token) {

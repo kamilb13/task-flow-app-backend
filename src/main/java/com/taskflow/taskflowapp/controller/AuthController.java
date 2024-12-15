@@ -7,6 +7,7 @@ import com.taskflow.taskflowapp.model.Role;
 import com.taskflow.taskflowapp.model.User;
 import com.taskflow.taskflowapp.repository.RoleRepository;
 import com.taskflow.taskflowapp.repository.UserRepository;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +16,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 public class AuthController {
@@ -31,14 +34,13 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<?> register(@RequestBody @Valid LoginRequest loginRequest) {
         Optional<User> pendingUser = userRepository.findByUsername(loginRequest.getUsername());
         if (pendingUser.isPresent()) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Username already in use");
         }
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String encodedPassword = passwordEncoder.encode(loginRequest.getPassword());
-        //Role userRole = roleRepository.findByName("ROLE_USER").orElseThrow(() -> new RuntimeException("Role USER not found"));
         Role userRole = roleRepository.findByName("ROLE_USER").orElseThrow(() -> new RuntimeException("Role USER not found"));
         User newUser = new User(loginRequest.getUsername(), encodedPassword, userRole);
         userRepository.save(newUser);
@@ -46,20 +48,22 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<?> login(@RequestBody @Valid LoginRequest loginRequest) {
         Optional<User> pendingUser = userRepository.findByUsername(loginRequest.getUsername());
         if (pendingUser.isPresent()) {
             User user = pendingUser.get();
             PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
             if (passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
-                String token = jwtUtil.generateToken(user.getUsername());
+                List<String> roles = user.getRoles().stream()
+                        .map(role -> role.getName())
+                        .collect(Collectors.toList());
+                String token = jwtUtil.generateToken(user.getUsername(), roles);
                 return ResponseEntity.ok(new LoginResponse(token));
-//                return ResponseEntity.ok(user);
             } else {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid password.");
             }
         } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found.");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User not found.");
         }
     }
 
