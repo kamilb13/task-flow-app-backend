@@ -1,4 +1,4 @@
-package com.taskflow.taskflowapp;
+package com.taskflow.taskflowapp.security;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

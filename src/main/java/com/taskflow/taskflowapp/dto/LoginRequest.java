@@ -1,4 +1,4 @@
-package com.taskflow.taskflowapp;
+package com.taskflow.taskflowapp.dto;
 
 public class LoginRequest {
     private String username;

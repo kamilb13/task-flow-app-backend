@@ -1,4 +1,4 @@
-package com.taskflow.taskflowapp;
+package com.taskflow.taskflowapp.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,8 +19,14 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/register", "/login").permitAll()
+                        .requestMatchers("/register", "/login", "/h2-console/**", "/add-test-admin").permitAll()
                         .anyRequest().authenticated()
+
+                )
+                .headers(headers -> headers
+                        .addHeaderWriter((request, response) -> {
+                            response.setHeader("Content-Security-Policy", "frame-ancestors 'self'");
+                        })
                 )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 

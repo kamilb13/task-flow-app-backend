@@ -1,4 +1,4 @@
-package com.taskflow.taskflowapp;
+package com.taskflow.taskflowapp.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

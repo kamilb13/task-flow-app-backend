@@ -1,4 +1,4 @@
-package com.taskflow.taskflowapp;
+package com.taskflow.taskflowapp.model;
 
 import jakarta.persistence.*;
 import lombok.*;
