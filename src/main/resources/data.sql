@@ -15,3 +15,7 @@ SELECT r.id, u.id FROM users u, roles r WHERE u.username = 'admin' AND r.name = 
 
 INSERT INTO user_roles (role_id, user_id)
 SELECT r.id, u.id FROM users u, roles r WHERE u.username = 'user' AND r.name = 'ROLE_USER';
+
+
+-- INSERT INTO boards (name)
+-- VALUES ('tytul tablicy');

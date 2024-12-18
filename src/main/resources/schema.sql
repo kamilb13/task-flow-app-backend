@@ -11,6 +11,22 @@ CREATE TABLE users
     password VARCHAR(255) NOT NULL
 );
 
+CREATE TABLE boards
+(
+    id               BIGINT AUTO_INCREMENT PRIMARY KEY,
+    name             VARCHAR(255) NOT NULL,
+    board_creator_id INT          NOT NULL
+);
+
+CREATE TABLE tasks
+(
+    id       BIGINT AUTO_INCREMENT PRIMARY KEY,
+    title    VARCHAR(255) NOT NULL,
+    user_id  BIGINT       NOT NULL,
+    board_id  BIGINT       NOT NULL,
+    FOREIGN KEY (board_id) REFERENCES boards (id)
+);
+
 CREATE TABLE user_roles
 (
     user_id BIGINT,
