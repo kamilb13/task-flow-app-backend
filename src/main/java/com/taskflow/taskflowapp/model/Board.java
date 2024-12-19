@@ -1,5 +1,6 @@
 package com.taskflow.taskflowapp.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -12,7 +13,6 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 public class Board {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,8 +20,9 @@ public class Board {
     private String name;
     private int boardCreatorId;
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
-    List<Task> toDo = new ArrayList<>();
+    private List<Task> toDo = new ArrayList<>();
 
     public Board(String name, int boardCreatorId, List<Task> toDo) {
         this.name = name;

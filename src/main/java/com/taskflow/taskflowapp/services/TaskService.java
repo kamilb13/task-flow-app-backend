@@ -22,11 +22,11 @@ public class TaskService {
         this.boardRepository = boardRepository;
     }
 
-    public Task createTask(String title, Long userId, Long boardId) {
+    public Task  createTask(String title, String description, Long userId, Long boardId) {
         Board board = boardRepository.findById(boardId)
                 .orElseThrow(() -> new RuntimeException("Board not found with id: " + boardId));
 
-        Task task = new Task(title, userId, board);
+        Task task = new Task(title, description,userId, board);
         return taskRepository.save(task);
     }
 }
