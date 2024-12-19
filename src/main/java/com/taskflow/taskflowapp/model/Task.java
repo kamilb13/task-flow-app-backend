@@ -20,6 +20,7 @@ public class Task {
     private String title;
     private Long userId;
 
+    //nazwa kolumny "board_id"
     @ManyToOne
     @JoinColumn(name = "board_id", nullable = false)
     private Board board;
