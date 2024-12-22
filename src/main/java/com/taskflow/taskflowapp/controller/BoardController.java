@@ -29,7 +29,6 @@ public class BoardController {
     @PostMapping("/create-board")
     public ResponseEntity<?> createBoard(@RequestBody Board board) {
         Optional<User> creator = userRepository.findById((long) board.getBoardCreatorId());
-
         if (creator.isEmpty()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Creator not found");
         }
