@@ -36,3 +36,12 @@ CREATE TABLE user_roles
     FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
     FOREIGN KEY (role_id) REFERENCES roles (id) ON DELETE CASCADE
 );
+
+CREATE TABLE user_boards
+(
+    user_id BIGINT,
+    board_id BIGINT,
+    PRIMARY KEY (user_id, board_id),
+    FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
+    FOREIGN KEY (board_id) REFERENCES boards (id) ON DELETE CASCADE
+);

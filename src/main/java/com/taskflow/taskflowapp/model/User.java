@@ -1,9 +1,14 @@
 package com.taskflow.taskflowapp.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -21,6 +26,11 @@ public class User {
     //@Column(unique = true)
     private String username;
     private String password;
+
+    @ManyToMany(mappedBy = "users")
+    @JsonIgnore
+    private List<Board> boards = new ArrayList<>();
+
 
     // MERGE - dla obiektow ktore istnieja w bazie danych
     // PERSIST - jak dodaje podczas inicjalizacji

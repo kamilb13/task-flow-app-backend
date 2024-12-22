@@ -9,6 +9,8 @@ import com.taskflow.taskflowapp.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class TaskService {
     TaskRepository taskRepository;
@@ -28,5 +30,9 @@ public class TaskService {
 
         Task task = new Task(title, description,userId, board);
         return taskRepository.save(task);
+    }
+
+    public List<Task> getAllTasks() {
+        return taskRepository.findAll();
     }
 }
