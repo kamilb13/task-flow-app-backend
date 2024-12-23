@@ -4,6 +4,7 @@ import com.taskflow.taskflowapp.model.Board;
 import com.taskflow.taskflowapp.model.User;
 import com.taskflow.taskflowapp.repository.BoardRepository;
 import com.taskflow.taskflowapp.repository.UserRepository;
+import com.taskflow.taskflowapp.services.BoardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,35 +18,38 @@ import java.util.stream.Collectors;
 @RestController
 public class BoardController {
 
-    private final BoardRepository boardRepository;
-    private final UserRepository userRepository;
+//    private final BoardRepository boardRepository;
+//    private final UserRepository userRepository;
+    private final BoardService boardService;
 
     @Autowired
-    public BoardController(BoardRepository boardRepository, UserRepository userRepository) {
-        this.boardRepository = boardRepository;
-        this.userRepository = userRepository;
+    public BoardController(BoardService boardService) {
+        this.boardService = boardService;
     }
+
+
+//    public BoardController(BoardRepository boardRepository, UserRepository userRepository) {
+//        this.boardRepository = boardRepository;
+//        this.userRepository = userRepository;
+//    }
 
     @PostMapping("/create-board")
     public ResponseEntity<?> createBoard(@RequestBody Board board) {
-        Optional<User> creator = userRepository.findById((long) board.getBoardCreatorId());
-        if (creator.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Creator not found");
+        try {
+            Board newBoard = boardService.createBoard(board);
+            return ResponseEntity.status(HttpStatus.CREATED).body(newBoard);
+        }catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
-        Board newBoard = new Board(board.getName(), board.getBoardCreatorId(), new ArrayList<>(), new ArrayList<>());
-        newBoard.getUsers().add(creator.get());
-        boardRepository.save(newBoard);
-        return ResponseEntity.status(HttpStatus.CREATED).body(newBoard);
     }
 
     @GetMapping("/get-boards")
     public ResponseEntity<?> getBoards(@RequestParam Long userId) {
-        List<Board> boards = boardRepository.findAll();
-        if (userId != null) {
-            boards = boards.stream()
-                    .filter(board -> board.getUsers().stream().anyMatch(user -> user.getId() == userId))
-                    .collect(Collectors.toList());
+        try {
+            List<Board> boards = boardService.getBoards(userId);
+            return ResponseEntity.status(HttpStatus.CREATED).body(boards);
+        }catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
-        return ResponseEntity.ok(boards);
     }
 }
