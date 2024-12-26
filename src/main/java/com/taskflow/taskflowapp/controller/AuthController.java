@@ -52,13 +52,14 @@ public class AuthController {
         Optional<User> pendingUser = userRepository.findByUsername(loginRequest.getUsername());
         if (pendingUser.isPresent()) {
             User user = pendingUser.get();
+            Long userId = user.getId();
             PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
             if (passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
                 List<String> roles = user.getRoles().stream()
                         .map(role -> role.getName())
                         .collect(Collectors.toList());
                 String token = jwtUtil.generateToken(user.getUsername(), roles);
-                return ResponseEntity.ok(new LoginResponse(token));
+                return ResponseEntity.ok(new LoginResponse(token, userId));
             } else {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid password.");
             }
