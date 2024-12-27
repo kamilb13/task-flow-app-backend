@@ -28,6 +28,15 @@ public class BoardController {
         }
     }
 
+    @DeleteMapping("delete-board")
+    public ResponseEntity<?> deleteBoard(@RequestBody Board board) {
+        try {boardService.deleteBoard(board.getId());
+            return ResponseEntity.ok().body("Board successfully deleted");
+        }catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
+
     @GetMapping("/get-boards")
     public ResponseEntity<?> getBoards(@RequestParam Long userId) {
         try {

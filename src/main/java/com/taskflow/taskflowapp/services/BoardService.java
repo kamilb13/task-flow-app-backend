@@ -43,4 +43,8 @@ public class BoardService {
         }
         return boards;
     }
+
+    public void deleteBoard(Long boardId) {
+        boardRepository.deleteById(boardId);
+    }
 }
