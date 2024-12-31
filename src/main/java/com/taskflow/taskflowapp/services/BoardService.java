@@ -47,4 +47,12 @@ public class BoardService {
     public void deleteBoard(Long boardId) {
         boardRepository.deleteById(boardId);
     }
+
+    public Board editBoard(Long boardId, Board updatedBoard) {
+        Optional<Board> boardToUpdate = boardRepository.findById(boardId);
+        Board editBoard = boardToUpdate.get();
+        editBoard.setName(updatedBoard.getName());
+        boardRepository.save(editBoard);
+        return editBoard;
+    }
 }

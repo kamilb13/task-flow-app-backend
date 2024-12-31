@@ -30,9 +30,10 @@ public class BoardController {
 
     @DeleteMapping("delete-board")
     public ResponseEntity<?> deleteBoard(@RequestBody Board board) {
-        try {boardService.deleteBoard(board.getId());
+        try {
+            boardService.deleteBoard(board.getId());
             return ResponseEntity.ok().body("Board successfully deleted");
-        }catch (Exception e) {
+        } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
@@ -43,6 +44,16 @@ public class BoardController {
             List<Board> boards = boardService.getBoards(userId);
             return ResponseEntity.status(HttpStatus.CREATED).body(boards);
         } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
+
+    @PutMapping("/edit-board")
+    public ResponseEntity<?> editBoard(@RequestParam Long boardId, @RequestBody Board board) {
+        try {
+            boardService.editBoard(boardId, board);
+            return ResponseEntity.ok().body("Board successfully updated");
+        } catch (Exception e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
