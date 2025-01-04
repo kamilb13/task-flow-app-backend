@@ -61,4 +61,24 @@ public class TaskController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
+
+    @PutMapping("/edit-task")
+    public ResponseEntity<?> editTask(@RequestBody Task task) {
+        try {
+            taskService.editTask(task);
+            return ResponseEntity.ok().body("Task successfully updated " + task);
+        } catch (Exception e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
+
+    @DeleteMapping("/delete-task")
+    public ResponseEntity<?> deleteTask(@RequestParam Long taskId) {
+        try {
+            taskService.deleteTask(taskId);
+            return ResponseEntity.ok().body("Task successfully deleted");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
 }

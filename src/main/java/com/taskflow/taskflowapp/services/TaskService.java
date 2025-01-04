@@ -61,6 +61,22 @@ public class TaskService {
         return taskRepository.save(task);
     }
 
+    public Task editTask(Task updatedTask) {
+        Optional<Task> optionalTask = taskRepository.findById(updatedTask.getId());
+        if (optionalTask.isPresent()) {
+            Task taskToEdit = optionalTask.get();
+            taskToEdit.setTitle(updatedTask.getTitle());
+            taskToEdit.setDescription(updatedTask.getDescription());
+            return taskRepository.save(taskToEdit);
+        } else {
+            throw new EntityNotFoundException("Task not found with this id");
+        }
+    }
+
+    public void deleteTask(Long taskId) {
+        taskRepository.deleteById(taskId);
+    }
+
 //    public Task addTaskToBoard(Long boardId, String title, String description, Long userId, TaskStatus status) {
 //        Board board = boardRepository.findById(boardId)
 //                .orElseThrow(() -> new RuntimeException("Board not found"));
