@@ -28,15 +28,29 @@ public class Board {
     )
     private List<User> users = new ArrayList<>();
 
+//    @JsonManagedReference
+//    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
+//    private List<Task> toDo = new ArrayList<>();
+//
+//    @JsonManagedReference
+//    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
+//    private List<Task> inProgress = new ArrayList<>();
+//
+//    @JsonManagedReference
+//    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
+//    private List<Task> completed = new ArrayList<>();
 
     @JsonManagedReference
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Task> toDo = new ArrayList<>();
+    private List<Task> tasks = new ArrayList<>();
 
-    public Board(String name, int boardCreatorId, List<Task> toDo, List<User> boardUsers) {
+    public Board(String name, int boardCreatorId, List<Task> tasks, List<User> boardUsers) {
         this.name = name;
         this.boardCreatorId = boardCreatorId;
-        this.toDo = toDo;
+        this.tasks = tasks;
+//        this.toDo = toDo;
+//        this.inProgress = inProgress;
+//        this.completed = completed;
         this.users = boardUsers;
     }
 }

@@ -21,17 +21,26 @@ public class Task {
     private String description;
     private Long userId;
 
-    //nazwa kolumny "board_id"
+    @Enumerated(EnumType.STRING)
+    private TaskStatus status;
 
     @ManyToOne
     @JoinColumn(name = "board_id", nullable = false)
     @JsonBackReference
     private Board board;
 
-    public Task(String title, String description, Long userId, Board board) {
+//    public Task(String title, String description, Long userId, Board board) {
+//        this.title = title;
+//        this.description = description;
+//        this.userId = userId;
+//        this.board = board;
+//    }
+
+    public Task(String title, String description, Long userId, Board board, TaskStatus status) {
         this.title = title;
         this.description = description;
         this.userId = userId;
+        this.status = status;
         this.board = board;
     }
 }
