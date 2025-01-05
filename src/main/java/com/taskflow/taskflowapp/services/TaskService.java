@@ -11,6 +11,7 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -39,8 +40,9 @@ public class TaskService {
 
     public List<Task> getAllTasksFromBoard(Long boardId) {
         List<Task> tasks = taskRepository.findByBoardId(boardId);
+
         if (tasks.isEmpty()) {
-            throw new RuntimeException("Board does not have tasks");
+            return Collections.emptyList();
         }
         return tasks;
     }
@@ -48,6 +50,7 @@ public class TaskService {
     public List<Task> getTasksByStatus(Long boardId, TaskStatus status) {
         Board board = boardRepository.findById(boardId)
                 .orElseThrow(() -> new EntityNotFoundException("Board not found with this id: " + boardId));
+
         return board.getTasks().stream()
                 .filter(task -> task.getStatus() == status)
                 .collect(Collectors.toList());
