@@ -1,5 +1,6 @@
 package com.taskflow.taskflowapp.controller;
 
+import com.taskflow.taskflowapp.dto.RegisterRequest;
 import com.taskflow.taskflowapp.security.JwtUtil;
 import com.taskflow.taskflowapp.dto.LoginRequest;
 import com.taskflow.taskflowapp.dto.LoginResponse;
@@ -34,17 +35,17 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody @Valid LoginRequest loginRequest) {
-        Optional<User> pendingUser = userRepository.findByUsername(loginRequest.getUsername());
+    public ResponseEntity<?> register(@RequestBody @Valid RegisterRequest registerRequest) {
+        Optional<User> pendingUser = userRepository.findByUsername(registerRequest.getUsername());
         if (pendingUser.isPresent()) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Username already in use");
         }
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        String encodedPassword = passwordEncoder.encode(loginRequest.getPassword());
+        String encodedPassword = passwordEncoder.encode(registerRequest.getPassword());
         Role userRole = roleRepository.findByName("ROLE_USER").orElseThrow(() -> new RuntimeException("Role USER not found"));
-        User newUser = new User(loginRequest.getUsername(), encodedPassword, userRole);
+        User newUser = new User(registerRequest.getUsername(), registerRequest.getEmail(), encodedPassword, userRole);
         userRepository.save(newUser);
-        return ResponseEntity.status(HttpStatus.CREATED).body("User registered successfully" + newUser.toString());
+        return ResponseEntity.status(HttpStatus.CREATED).body("User registered successfully" + newUser);
     }
 
     @PostMapping("/login")

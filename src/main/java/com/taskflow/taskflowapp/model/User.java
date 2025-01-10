@@ -25,12 +25,12 @@ public class User {
 
     //@Column(unique = true)
     private String username;
+    private String email;
     private String password;
 
     @ManyToMany(mappedBy = "users")
     @JsonIgnore
     private List<Board> boards = new ArrayList<>();
-
 
     // MERGE - dla obiektow ktore istnieja w bazie danych
     // PERSIST - jak dodaje podczas inicjalizacji
@@ -42,13 +42,15 @@ public class User {
     )
     private Set<Role> roles = new HashSet<>();
 
-    public User(String username, String password) {
+    public User(String username, String email, String password) {
         this.username = username;
+        this.email = email;
         this.password = password;
     }
 
-    public User(String username, String password, Role role) {
+    public User(String username, String email, String password, Role role) {
         this.username = username;
+        this.email = email;
         this.password = password;
         this.roles.add(role);
     }
