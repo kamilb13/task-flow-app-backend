@@ -28,7 +28,7 @@ public class BoardService {
         if (creator.isEmpty()) {
             throw new IllegalArgumentException("Creator not found");
         }
-        Board newBoard = new Board(board.getName(), board.getBoardCreatorId(), new ArrayList<>(), new ArrayList<>());
+        Board newBoard = new Board(board.getName(), board.getBoardCreatorId(), new ArrayList<>(), new ArrayList<>(), board.getEstimatedEndDate());
         newBoard.getUsers().add(creator.get());
         boardRepository.save(newBoard);
         return newBoard;

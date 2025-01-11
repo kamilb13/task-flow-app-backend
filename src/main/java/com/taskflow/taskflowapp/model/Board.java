@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,6 +21,12 @@ public class Board {
     private String name;
     private int boardCreatorId;
 
+    @Column(name = "created_at", nullable = false, updatable = false)
+    private LocalDateTime createdAt = LocalDateTime.now();
+
+    @Column(name = "estimated_end_date")
+    private LocalDateTime estimatedEndDate;
+
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     @JoinTable(
             name = "user_boards",
@@ -28,29 +35,15 @@ public class Board {
     )
     private List<User> users = new ArrayList<>();
 
-//    @JsonManagedReference
-//    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
-//    private List<Task> toDo = new ArrayList<>();
-//
-//    @JsonManagedReference
-//    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
-//    private List<Task> inProgress = new ArrayList<>();
-//
-//    @JsonManagedReference
-//    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
-//    private List<Task> completed = new ArrayList<>();
-
     @JsonManagedReference
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Task> tasks = new ArrayList<>();
 
-    public Board(String name, int boardCreatorId, List<Task> tasks, List<User> boardUsers) {
+    public Board(String name, int boardCreatorId, List<Task> tasks, List<User> boardUsers, LocalDateTime estimatedEndDate) {
         this.name = name;
         this.boardCreatorId = boardCreatorId;
         this.tasks = tasks;
-//        this.toDo = toDo;
-//        this.inProgress = inProgress;
-//        this.completed = completed;
         this.users = boardUsers;
+        this.estimatedEndDate = estimatedEndDate;
     }
 }

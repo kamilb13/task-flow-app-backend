@@ -16,7 +16,9 @@ CREATE TABLE boards
 (
     id               BIGINT AUTO_INCREMENT PRIMARY KEY,
     name             VARCHAR(255) NOT NULL,
-    board_creator_id INT          NOT NULL
+    board_creator_id INT          NOT NULL,
+    created_at            DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    estimated_end_date    DATETIME     NULL
 );
 
 CREATE TABLE tasks
