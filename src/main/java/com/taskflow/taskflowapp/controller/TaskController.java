@@ -81,4 +81,14 @@ public class TaskController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
+
+    @PostMapping("/change-position")
+    public ResponseEntity<?> changeTaskPosition(@RequestBody Task task) {
+        try {
+            taskService.editTaskPosition(task);
+            return ResponseEntity.ok().body("Task position successfully changed");
+        } catch (Exception e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
 }

@@ -58,21 +58,17 @@ VALUES (1, 5);
 -- INSERT INTO boards (name)
 -- VALUES ('tytul tablicy');
 
-INSERT INTO tasks (title, description, status, user_id, board_id)
-VALUES ('Zadanie 1', 'Opis zadania numer 1', 'TO_DO', 1, 1);
-INSERT INTO tasks (title, description, status, user_id, board_id)
-VALUES ('Zadanie 2', 'Opis zadania numer 2', 'TO_DO', 1, 1);
-INSERT INTO tasks (title, description, status, user_id, board_id)
-VALUES ('Zadanie 3', 'Opis zadania numer 3', 'TO_DO', 1, 1);
-INSERT INTO tasks (title, description, status, user_id, board_id)
-VALUES ('Zadanie 4', 'Opis zadania numer 4', 'IN_PROGRESS', 1, 1);
-INSERT INTO tasks (title, description, status, user_id, board_id)
-VALUES ('Zadanie 5', 'Opis zadania numer 5', 'IN_PROGRESS', 1, 1);
-INSERT INTO tasks (title, description, status, user_id, board_id)
-VALUES ('Zadanie 6', 'Opis zadania numer 6', 'IN_PROGRESS', 1, 1);
-INSERT INTO tasks (title, description, status, user_id, board_id)
-VALUES ('Zadanie 7', 'Opis zadania numer 7', 'COMPLETED', 1, 1);
-INSERT INTO tasks (title, description, status, user_id, board_id)
-VALUES ('Zadanie 8', 'Opis zadania numer 8', 'COMPLETED', 1, 1);
-INSERT INTO tasks (title, description, status, user_id, board_id)
-VALUES ('Zadanie 9', 'Opis zadania numer 9', 'COMPLETED', 1, 1);
+INSERT INTO tasks (title, description, status, position, user_id, board_id)
+VALUES
+    ('Zadanie 1', 'Opis zadania numer 1', 'TO_DO', 1, 1, 1),
+    ('Zadanie 2', 'Opis zadania numer 2', 'TO_DO', 2, 1, 1),
+    ('Zadanie 3', 'Opis zadania numer 3', 'TO_DO', 3, 1, 1),
+
+    ('Zadanie 4', 'Opis zadania numer 4', 'IN_PROGRESS', 1, 1, 1),
+    ('Zadanie 5', 'Opis zadania numer 5', 'IN_PROGRESS', 2, 1, 1),
+    ('Zadanie 6', 'Opis zadania numer 6', 'IN_PROGRESS', 3, 1, 1),
+
+    ('Zadanie 7', 'Opis zadania numer 7', 'COMPLETED', 1, 1, 1),
+    ('Zadanie 8', 'Opis zadania numer 8', 'COMPLETED', 2, 1, 1),
+    ('Zadanie 9', 'Opis zadania numer 9', 'COMPLETED', 3, 1, 1);
+

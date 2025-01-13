@@ -20,6 +20,7 @@ public class Task {
     private String title;
     private String description;
     private Long userId;
+    private int position;
 
     @Enumerated(EnumType.STRING)
     private TaskStatus status;
@@ -36,11 +37,12 @@ public class Task {
 //        this.board = board;
 //    }
 
-    public Task(String title, String description, Long userId, Board board, TaskStatus status) {
+    public Task(String title, String description, Long userId, Board board, TaskStatus status, int position) {
         this.title = title;
         this.description = description;
         this.userId = userId;
         this.status = status;
         this.board = board;
+        this.position = position;
     }
 }

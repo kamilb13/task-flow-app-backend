@@ -27,6 +27,7 @@ CREATE TABLE tasks
     title       VARCHAR(255) NOT NULL,
     description VARCHAR(255) NOT NULL,
     status      VARCHAR(255) NOT NULL,
+    position    INT NOT NULL,
     user_id     BIGINT       NOT NULL,
     board_id    BIGINT       NOT NULL,
     FOREIGN KEY (board_id) REFERENCES boards (id)

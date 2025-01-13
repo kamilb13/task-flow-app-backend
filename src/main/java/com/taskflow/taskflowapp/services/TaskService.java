@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -34,7 +35,13 @@ public class TaskService {
                 .orElseThrow(() -> new RuntimeException("Board not found with this id " + boardId));
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found with this id " + userId));
-        Task task = new Task(title, description, user.getId(), board, TaskStatus.TO_DO);
+        int maxPosition = taskRepository.findByBoardIdAndStatus(boardId, TaskStatus.TO_DO)
+                .stream()
+                .mapToInt(Task::getPosition)
+                .max()
+                .orElse(0);
+
+        Task task = new Task(title, description, user.getId(), board, TaskStatus.TO_DO, maxPosition + 1);
         return taskRepository.save(task);
     }
 
@@ -80,13 +87,23 @@ public class TaskService {
         taskRepository.deleteById(taskId);
     }
 
-//    public Task addTaskToBoard(Long boardId, String title, String description, Long userId, TaskStatus status) {
-//        Board board = boardRepository.findById(boardId)
-//                .orElseThrow(() -> new RuntimeException("Board not found"));
-//
-//        Task task = new Task(title, description, userId, board, status);
-//        board.getTasks().add(task);
-//
-//        return taskRepository.save(task);
-//    }
+    public Task editTaskPosition(Task updatedTask) {
+        Task taskToEdit = taskRepository.findById(updatedTask.getId())
+                .orElseThrow(() -> new EntityNotFoundException("Task not found with this id"));
+        List<Task> tasks = taskRepository.findByBoardIdAndStatus(
+                        taskToEdit.getBoard().getId(),
+                        taskToEdit.getStatus()
+                )
+                .stream()
+                .sorted(Comparator.comparingInt(Task::getPosition))
+                .collect(Collectors.toList());
+        tasks.remove(taskToEdit);
+        tasks.add(updatedTask.getPosition() - 1, taskToEdit);
+        for (int i = 0; i < tasks.size(); i++) {
+            tasks.get(i).setPosition(i + 1);
+        }
+        taskRepository.saveAll(tasks);
+        return taskToEdit;
+    }
+
 }
