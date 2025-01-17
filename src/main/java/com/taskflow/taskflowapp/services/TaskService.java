@@ -40,7 +40,6 @@ public class TaskService {
                 .mapToInt(Task::getPosition)
                 .max()
                 .orElse(0);
-
         Task task = new Task(title, description, user.getId(), board, TaskStatus.TO_DO, maxPosition + 1);
         return taskRepository.save(task);
     }
@@ -57,7 +56,6 @@ public class TaskService {
     public List<Task> getTasksByStatus(Long boardId, TaskStatus status) {
         Board board = boardRepository.findById(boardId)
                 .orElseThrow(() -> new EntityNotFoundException("Board not found with this id: " + boardId));
-
         return board.getTasks().stream()
                 .filter(task -> task.getStatus() == status)
                 .collect(Collectors.toList());
@@ -66,8 +64,8 @@ public class TaskService {
     public Task changeStatusOfTask(Long taskId, TaskStatus newStatus) {
         Task task = taskRepository.findById(taskId)
                 .orElseThrow(() -> new EntityNotFoundException("Task not found with id: " + taskId));
-
         task.setStatus(newStatus);
+        updateTaskPositionsAfterChange();
         return taskRepository.save(task);
     }
 
@@ -85,6 +83,26 @@ public class TaskService {
 
     public void deleteTask(Long taskId) {
         taskRepository.deleteById(taskId);
+        updateTaskPositionsAfterChange();
+    }
+
+    public void updateTaskPositionsAfterChange() {
+        List<Task> tasks = taskRepository.findAll();
+        List<Task> tasksToDo = tasks.stream().filter(task -> task.getStatus().name().equals("TO_DO")).collect(Collectors.toList());
+        List<Task> tasksInProgress = tasks.stream().filter(task -> task.getStatus().name().equals("IN_PROGRESS")).collect(Collectors.toList());
+        List<Task> tasksCompleted = tasks.stream().filter(task -> task.getStatus().name().equals("COMPLETED")).collect(Collectors.toList());
+        updatePositionsInCategory(tasksToDo);
+        updatePositionsInCategory(tasksInProgress);
+        updatePositionsInCategory(tasksCompleted);
+    }
+
+    private void updatePositionsInCategory(List<Task> tasksInCategory) {
+        tasksInCategory.sort(Comparator.comparingInt(Task::getPosition));
+        for (int i = 0; i < tasksInCategory.size(); i++) {
+            Task task = tasksInCategory.get(i);
+            task.setPosition(i + 1);
+            taskRepository.save(task);
+        }
     }
 
     public Task editTaskPosition(Task updatedTask) {
