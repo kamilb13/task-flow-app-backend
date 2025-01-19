@@ -55,4 +55,14 @@ public class BoardService {
         boardRepository.save(editBoard);
         return editBoard;
     }
+
+    public Board addUserToBoard(Long boardId, Long userId) {
+        Board board = boardRepository.findById(boardId)
+                .orElseThrow(() -> new IllegalArgumentException("Board not found!"));
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("User not found!"));
+
+        board.getUsers().add(user);
+        return boardRepository.save(board);
+    }
 }

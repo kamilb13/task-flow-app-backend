@@ -57,4 +57,14 @@ public class BoardController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
+
+    @PutMapping("/add-user-to-board")
+    public ResponseEntity<?> addUserToBoard(@RequestParam Long boardId, @RequestParam Long userId) {
+        try {
+            boardService.addUserToBoard(boardId, userId);
+            return ResponseEntity.ok().body("User successfully added to board");
+        } catch (Exception e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
 }

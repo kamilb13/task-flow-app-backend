@@ -1,5 +1,6 @@
 package com.taskflow.taskflowapp.controller;
 
+import com.taskflow.taskflowapp.dto.UsersResponse;
 import com.taskflow.taskflowapp.model.User;
 import com.taskflow.taskflowapp.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,8 +21,11 @@ public class UserController {
     }
 
     @GetMapping("/users")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public List<User> getUsers() {
-        return userRepository.findAll();
+//    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public List<UsersResponse> getUsers() {
+        return userRepository.findAll()
+                .stream()
+                .map((user) -> new UsersResponse(user.getId() ,user.getUsername()))
+                .toList();
     }
 }
