@@ -38,11 +38,16 @@ public class BoardService {
         List<Board> boards = boardRepository.findAll();
         if (userId != null) {
             boards = boards.stream()
-                    .filter(board -> board.getUsers().stream().anyMatch(user -> user.getId() == userId))
+                    .filter(board -> board.getUsers().stream().anyMatch(user -> user.getId().equals(userId)))
                     .collect(Collectors.toList());
         }
+
+        boards.forEach(board ->
+                board.getUsers().forEach(user -> user.setPassword(null))
+        );
         return boards;
     }
+
 
     public void deleteBoard(Long boardId) {
         boardRepository.deleteById(boardId);

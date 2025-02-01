@@ -19,6 +19,7 @@ target/
 *.iml
 *.ipr
 bazadanych
+uploads
 /src/main/resources/application.properties
 ### NetBeans ###
 /nbproject/private/

@@ -30,7 +30,7 @@ public class SecurityConfig {
                 .and()
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/register", "/login", "/h2-console/**", "/add-test-admin", "/board/**", "/create-board", "/get-tasks").permitAll()
+                        .requestMatchers("/register", "/login", "/h2-console/**", "/add-test-admin", "/board/**", "/create-board", "/get-tasks", "/get-avatar/**").permitAll()
                         .anyRequest().authenticated()
 
                 )

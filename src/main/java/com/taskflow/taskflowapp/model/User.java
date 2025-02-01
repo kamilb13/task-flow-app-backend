@@ -27,6 +27,7 @@ public class User {
     private String username;
     private String email;
     private String password;
+    private String avatarUrl;
 
     @ManyToMany(mappedBy = "users")
     @JsonIgnore
@@ -53,5 +54,6 @@ public class User {
         this.email = email;
         this.password = password;
         this.roles.add(role);
+        this.avatarUrl = "/uploads/default_avatar.jpeg";
     }
 }
