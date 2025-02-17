@@ -18,6 +18,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -57,9 +58,9 @@ public class TaskTest {
     public void testAddTask() throws Exception {
         User user = new User("Jan", "Doe");
         userRepository.save(user);
-        Board board = new Board("Test Board", Math.toIntExact(user.getId()), new ArrayList<>(), new ArrayList<>());
+        Board board = new Board("Test Board", Math.toIntExact(user.getId()), new ArrayList<>(), new ArrayList<>(), LocalDateTime.now());
         boardRepository.save(board);
-        Task task = new Task("Task 1", "Description 1", user.getId(), board);
+        Task task = new Task("Task 1", "Description 1", user.getId(), board, TaskStatus.TO_DO, 1);
 
         String taskJson = """
                 {

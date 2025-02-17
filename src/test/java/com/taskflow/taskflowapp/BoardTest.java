@@ -2,11 +2,8 @@ package com.taskflow.taskflowapp;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.taskflow.taskflowapp.model.Board;
-import com.taskflow.taskflowapp.model.Role;
-import com.taskflow.taskflowapp.model.Task;
 import com.taskflow.taskflowapp.model.User;
 import com.taskflow.taskflowapp.repository.BoardRepository;
-import com.taskflow.taskflowapp.repository.TaskRepository;
 import com.taskflow.taskflowapp.repository.UserRepository;
 import org.junit.Before;
 import org.junit.Test;
@@ -18,6 +15,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -50,9 +48,9 @@ public class BoardTest {
 
     @Test
     public void testCreateBoard() throws Exception {
-        User creator = new User("Jan", "Doe");
+        User creator = new User("John", "john@john.com");
         userRepository.save(creator);
-        Board board = new Board("Test Board", Math.toIntExact(creator.getId()), new ArrayList<>(), new ArrayList<>());
+        Board board = new Board("Test Board", Math.toIntExact(creator.getId()), new ArrayList<>(), new ArrayList<>(), LocalDateTime.now() );
 
         mockMvc.perform(post("/create-board")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -64,7 +62,7 @@ public class BoardTest {
 
     @Test
     public void testCreateBoardWithInvalidUser() throws Exception {
-        Board board = new Board("Test Board", 9999, new ArrayList<>(), new ArrayList<>());
+        Board board = new Board("Test Board", 9999, new ArrayList<>(), new ArrayList<>(), LocalDateTime.now());
 
         mockMvc.perform(post("/create-board")
                         .contentType(MediaType.APPLICATION_JSON)

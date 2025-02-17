@@ -2,6 +2,7 @@ package com.taskflow.taskflowapp;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.taskflow.taskflowapp.dto.LoginRequest;
+import com.taskflow.taskflowapp.dto.RegisterRequest;
 import com.taskflow.taskflowapp.model.Role;
 import com.taskflow.taskflowapp.model.User;
 import com.taskflow.taskflowapp.repository.RoleRepository;
@@ -64,12 +65,12 @@ public class AuthenticationControllerTest {
         if (existingUser.isEmpty()) {
             String encodedPassword = passwordEncoder.encode("admin");
             Role userRole = roleRepository.findByName("ROLE_ADMIN").orElseThrow(() -> new RuntimeException("Role USER not found!"));
-            User admin = new User("admin", encodedPassword, userRole);
+            User admin = new User("admin", "admin@admin.com", encodedPassword, userRole);
             userRepository.save(admin);
         }
         LoginRequest loginRequest = new LoginRequest("admin", "admin");
 
-        mockMvc.perform(post("/login") // Symulowanie zapytania HTTP
+        mockMvc.perform(post("/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(loginRequest)))
                 .andExpect(status().isOk())
@@ -82,12 +83,12 @@ public class AuthenticationControllerTest {
         if (existingUser.isEmpty()) {
             String encodedPassword = passwordEncoder.encode("admin");
             Role userRole = roleRepository.findByName("ROLE_ADMIN").orElseThrow(() -> new RuntimeException("Role USER not found!"));
-            User admin = new User("admin", encodedPassword, userRole);
+            User admin = new User("admin", "admin@admin.com", encodedPassword, userRole);
             userRepository.save(admin);
         }
         LoginRequest loginRequest = new LoginRequest("admin", "adminNotValid");
 
-        mockMvc.perform(post("/login") // Symulowanie zapytania HTTP
+        mockMvc.perform(post("/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(loginRequest)))
                 .andExpect(status().isUnauthorized());
@@ -99,12 +100,12 @@ public class AuthenticationControllerTest {
         if (existingUser.isEmpty()) {
             String encodedPassword = passwordEncoder.encode("admin");
             Role userRole = roleRepository.findByName("ROLE_ADMIN").orElseThrow(() -> new RuntimeException("Role USER not found!"));
-            User admin = new User("admin", encodedPassword, userRole);
+            User admin = new User("admin", "admin@admin.com", encodedPassword, userRole);
             userRepository.save(admin);
         }
         LoginRequest loginRequest = new LoginRequest("adminNotValid", "adminNotValid");
 
-        mockMvc.perform(post("/login") // Symulowanie zapytania HTTP
+        mockMvc.perform(post("/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(loginRequest)))
                 .andExpect(status().isUnauthorized());
@@ -117,8 +118,8 @@ public class AuthenticationControllerTest {
         if (existingUser.isPresent()) {
             userRepository.delete(existingUser.get());
         }
-        LoginRequest loginRequest = new LoginRequest("admin", "admin");
-        mockMvc.perform(post("/register") // Symulowanie zapytania HTTP
+        RegisterRequest loginRequest = new RegisterRequest("admin", "admin", "admin@admin.com");
+        mockMvc.perform(post("/register")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(loginRequest)))
                 .andExpect(status().isCreated()); // 201
@@ -130,11 +131,11 @@ public class AuthenticationControllerTest {
         if (existingUser.isEmpty()) {
             String encodedPassword = passwordEncoder.encode("admin");
             Role userRole = roleRepository.findByName("ROLE_ADMIN").orElseThrow(() -> new RuntimeException("Role USER not found!"));
-            User admin = new User("admin", encodedPassword, userRole);
+            User admin = new User("admin", "admin@admin.com", encodedPassword, userRole);
             userRepository.save(admin);
         }
         LoginRequest loginRequest = new LoginRequest("admin", "admin");
-        mockMvc.perform(post("/register") // Symulowanie zapytania HTTP
+        mockMvc.perform(post("/register")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(loginRequest)))
                 .andExpect(status().isConflict()); // 409
