@@ -111,7 +111,6 @@ public class AuthenticationControllerTest {
                 .andExpect(status().isUnauthorized());
     }
 
-
     @Test
     public void testRegisterWhenUserDoesntExist() throws Exception {
         Optional<User> existingUser = userRepository.findByUsername("admin");
@@ -134,7 +133,7 @@ public class AuthenticationControllerTest {
             User admin = new User("admin", "admin@admin.com", encodedPassword, userRole);
             userRepository.save(admin);
         }
-        LoginRequest loginRequest = new LoginRequest("admin", "admin");
+        RegisterRequest loginRequest = new RegisterRequest("admin", "admin", "admin@admin.com");
         mockMvc.perform(post("/register")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(loginRequest)))
