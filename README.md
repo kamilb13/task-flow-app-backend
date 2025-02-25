@@ -72,6 +72,8 @@ Aplikacja będzie dostępna pod adresem http://localhost:3000 dla frontendu i ht
 
 ## Testy
 
+W tym projekcie testy są napisane w języku Java z użyciem frameworku Spring Boot. Do testowania aplikacji wykorzystywane są JUnit oraz MockMvc, które umożliwiają symulowanie zapytań HTTP w testach integracyjnych. Testy sprawdzają pełną integrację aplikacji, w tym komunikację z bazą danych przy użyciu Spring Data JPA i repozytoriów. Dodatkowo, do szyfrowania haseł używany jest BCryptPasswordEncoder.
+
 <h2>AuthenticationControllerTest</h2>
 <h3>testLoginWhenCredentialsAreValid</h3>
 <p><strong>Cel:</strong> Sprawdzenie logowania przy prawidłowych danych.</p>
