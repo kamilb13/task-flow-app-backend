@@ -35,7 +35,9 @@ TaskFlow to aplikacja do zarządzania zadaniami, pozwalająca na tworzenie tabli
    Aby sklonować repozytorium, użyj polecenia:
    ```bash
    git clone https://github.com/kamilb13/task_flow-app-backend.git
-
+- Dla frontendu:
+   ```bash
+   git clone https://github.com/kamilb13/task_flow-app-frontend.git
 2. **Instalacja zależności**
 Przejdź do katalogów frontend i backend, a następnie zainstaluj wymagane zależności.
 
