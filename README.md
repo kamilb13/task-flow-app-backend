@@ -69,3 +69,54 @@ Baza danych H2 jest wbudowana, ale można ją skonfigurować, edytując ustawien
 Aplikacja będzie dostępna pod adresem http://localhost:3000 dla frontendu i http://localhost:8080 dla backendu (lub zgodnie z ustawieniami).
 
 7. **Licencja** MIT
+
+## Testy
+
+<h2>AuthenticationControllerTest</h2>
+<h3>testLoginWhenCredentialsAreValid</h3>
+<p><strong>Cel:</strong> Sprawdzenie logowania przy prawidłowych danych.</p>
+<p><strong>Weryfikacja:</strong> Kod odpowiedzi: 200 OK, Obecność tokena w odpowiedzi.</p>
+
+<h3>testLoginWhenPasswordIsNotValid</h3>
+<p><strong>Cel:</strong> Reakcja systemu na błędne hasło.</p>
+<p><strong>Weryfikacja:</strong> Kod odpowiedzi: 401 Unauthorized</p>
+
+<h3>testLoginWhenCredentialsAreNotValid</h3>
+<p><strong>Cel:</strong> Reakcja na błędną nazwę użytkownika i hasło.</p>
+<p><strong>Weryfikacja:</strong> Kod odpowiedzi: 401 Unauthorized</p>
+
+<h3>testRegisterWhenUserDoesntExist</h3>
+<p><strong>Cel:</strong> Rejestracja nowego użytkownika.</p>
+<p><strong>Weryfikacja:</strong> Kod odpowiedzi: 201 Created</p>
+
+<h3>testRegisterWhenUserExist</h3>
+<p><strong>Cel:</strong> Rejestracja użytkownika, który już istnieje.</p>
+<p><strong>Weryfikacja:</strong> Kod odpowiedzi: 409 Conflict</p><br>
+
+<h2>TaskTest</h2>
+<h3>testAddTask</h3>
+<p><strong>Cel:</strong> Dodanie nowego zadania do tablicy.</p>
+<p><strong>Weryfikacja:</strong> Kod odpowiedzi: 201 Created</p>
+
+<h3>testDeleteTask</h3>
+<p><strong>Cel:</strong> Usunięcie istniejącego zadania.</p>
+<p><strong>Weryfikacja:</strong> Kod odpowiedzi: 200 OK, Zadanie usunięte z bazy danych.</p><br>
+
+<h2>BoardTest</h2>
+<h3>testCreateBoard</h3>
+<p><strong>Cel:</strong> Tworzenie nowej tablicy użytkownika.</p>
+<p><strong>Weryfikacja:</strong> Kod odpowiedzi: 201 Created, Poprawność nazwy tablicy i ID twórcy.</p>
+
+<h3>testCreateBoardWithInvalidUser</h3>
+<p><strong>Cel:</strong> Tworzenie tablicy z nieistniejącym użytkownikiem.</p>
+<p><strong>Weryfikacja:</strong> Kod odpowiedzi: 400 Bad Request, Treść odpowiedzi: "Creator not found".</p>
+
+<h3>testGetBoardsForUser</h3>
+<p><strong>Cel:</strong> Pobieranie tablic przypisanych do użytkownika.</p>
+<p><strong>Weryfikacja:</strong> Kod odpowiedzi: 200 OK, Lista tablic przypisanych do użytkownika.</p>
+
+<h3>testGetBoardsForNonexistentUser</h3>
+<p><strong>Cel:</strong> Pobieranie tablic dla nieistniejącego użytkownika.</p>
+<p><strong>Weryfikacja:</strong> Kod odpowiedzi: 200 OK, Zwrócenie pustej listy.</p>
+
+
