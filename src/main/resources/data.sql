@@ -8,7 +8,7 @@ INSERT INTO users (username, email, password, avatar_url)
 VALUES ('admin', 'admin@admin.com', '$2a$10$dItUTI4jMBJ.VK2qeayOC.rg/a9wdjhfMHWdcMUTTlbG60uNHif1O', '/uploads/default_avatar.jpeg');
 
 INSERT INTO users (username, email, password, avatar_url)
-VALUES ('user', 'user@user.com', '$2a$10$DpU6XMeL/1nFyC2yyuE33.wgU1C0tGU/W9BTcvENbpRsI94wbIuUK', '/uploads/default_avatar.jpeg');
+VALUES ('user', 'user@user.com', '$2y$10$2N9NFKj9Znz/Yc7is8pWOOAGuDBkzRAecA1GPPT/kzA6qH6aLojOm', '/uploads/default_avatar.jpeg');
 
 INSERT INTO user_roles (role_id, user_id)
 SELECT r.id, u.id FROM users u, roles r WHERE u.username = 'admin' AND r.name = 'ROLE_ADMIN';
