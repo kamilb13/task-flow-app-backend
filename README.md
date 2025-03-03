@@ -26,7 +26,7 @@ TaskFlow to aplikacja do zarządzania zadaniami, pozwalająca na tworzenie tabli
 ## Technologie
 
 - **Frontend**: React, Redux Toolkit, React Beautiful DnD, React Bootstrap
-- **Backend**: Spring Boot
+- **Backend**: Spring Boot, Spring Security
 - **Baza danych**: H2 Database
 
 ## Instalacja
